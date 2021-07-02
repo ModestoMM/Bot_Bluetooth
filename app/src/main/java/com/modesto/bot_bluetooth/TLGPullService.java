@@ -35,7 +35,12 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.UUID;
 
@@ -78,9 +83,6 @@ public class TLGPullService extends IntentService {
 
     //Variable de la API Conexion
     Sensor sensor = new Sensor();
-
-   //Keyboard Button
-    ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
 
 
     String offset="0";
@@ -149,7 +151,7 @@ public class TLGPullService extends IntentService {
                     if(resultado != null){
                         VerificarMensajesChat(update_id);
                     }
-            }else{
+            }else{/*
                 if(rest.contains("channel_post")){
                     Gson gson = new Gson();
                     telegramCanal = gson.fromJson(rest, TelegramCanalRequest.class);
@@ -159,7 +161,7 @@ public class TLGPullService extends IntentService {
                     if(resultCanal != null) {
                         VerificarMensajesCanal(update_id);
                     }
-                }
+                }*/
 
             }
         }
@@ -171,70 +173,59 @@ public class TLGPullService extends IntentService {
                 mensaje = result.getMessage();
             }
 
+        Log.d("MENSAJE", "VerificarMensajesChat: "+mensaje.getText());
+
             if(Integer.parseInt(update_id) > (Integer.parseInt(offset) - 1)) {
                 offset = String.valueOf(Integer.parseInt(update_id) + 1);
             }
 
             From f = mensaje.getFrom();
 
-        if(mensaje.getText().equals("¿Cuantas personas han entrado a mi casa?")){
-            int valor = (int) (Math.random()*10);
-            MandarMessage("Hola "+f.getFirstName()+" el numero de personas que ha entrado a tu casa es: "+ valor );
+        if(mensaje.getText().equals("¿Cuantas personas han entrado a mi casa hoy?")){
+            Datos_API("hoy");
+        }else if(mensaje.getText().equals("¿Cuantas personas han entrado a mi casa esta semana?")){
+            Datos_API("semana");
         }else
-        if(mensaje.getText().equals("¿Cuantas veces he salido de casa?")){
-            int valor = (int) (Math.random()*10);
-            MandarMessage("Hola "+f.getFirstName()+" el numero de veces que has salido es: "+ valor );
-        }else
-        if(mensaje.getText().equals("¿Cuál fué la última ves que salí de casa?")){
-            long rangebegin = Timestamp.valueOf("2021-03-10 00:00:00").getTime();
-            long rangeend = Timestamp.valueOf("2021-04-21 00:58:00").getTime();
-            long diff = rangeend - rangebegin + 1;
-            Timestamp rand = new Timestamp(rangebegin + (long)(Math.random() * diff));
-            MandarMessage(String.format("Hola " + f.getFirstName() + ", la última ves que saliste de casa fué: " + rand.toString() ) );
-        }else
-        if(mensaje.getText().equals("¿Cuándo fué la última ves que alguien entró a casa?")){
-            long rangebegin = Timestamp.valueOf("2021-03-10 00:00:00").getTime();
-            long rangeend = Timestamp.valueOf("2021-04-21 00:58:00").getTime();
-            long diff = rangeend - rangebegin + 1;
-            Timestamp rand = new Timestamp(rangebegin + (long)(Math.random() * diff));
-            MandarMessage("Hola "+f.getFirstName()+" la última ves que alguien entró a casa fué: " + rand.toString() );
+        if(mensaje.getText().equals("¿Cuándo fue la última ves que alguien entró a mi casa?")){
+            Datos_API("fecha_ultima");
         }else
         if(mensaje.getText().equals("Gracias")){
             MandarMessage("De nada "+f.getFirstName()+" estoy para servirte <3");
         }else
-        if(mensaje.getText().equals("Adios")){
-            MandarMessage("Hasta pronto "+f.getFirstName()+"!");
-        }else
-        if(mensaje.getText().equals("Adiós")){
+        if(mensaje.getText().equals("Adios") || mensaje.getText().equals("Adiós")){
             MandarMessage("Hasta pronto "+f.getFirstName()+"!");
         }else
         if(mensaje.getText().equals("Hola")){
-            Datos_API();
+            MandarMessage("Hola "+f.getFirstName()+"!");
         } else
         if(mensaje.getText().equals("Opciones")){
-            String mens = "Hola "+f.getFirstName()+"! \n"+
-                    "Las opciones que tengo son: \n" +
+            String mens = "Hola "+f.getFirstName()+"!\n "+
+                    "Las opciones que tengo son:\n " +
                     "1. Hola,\n " +
                     "2. Adios,\n " +
                     "3. Gracias,\n " +
-                    "4. ¿Cuantas veces he salido de casa?, \n " +
-                    "5. ¿Cuantas personas han entrado a mi casa?,\n " +
-                    "6. ¿Cuál fué la última ves que salí de casa?,\n " +
-                    "7. ¿Cuándo fué la última ves que alguien entró a casa?,\n " +
+                    "5. ¿Cuantas personas han entrado a mi casa hoy?,\n " +
+                    "6. ¿Cuantas personas han entrado a mi casa esta semana?,\n " +
+                    "7. ¿Cuándo fue la última ves que alguien entró a mi casa?,\n " +
                     "Trata de escribirlas tal cual si no, no podre entender lo que quieres :(";
             MandarMessage(mens);
+        }else if(mensaje.getText().equals("encender")  || mensaje.getText().equals("enciende")){
+            mConnectedThread.write("1");
+            MandarMessage("Encendiendo comunicación Arduino");
+        }
+        else if(mensaje.getText().equals("apagar")  || mensaje.getText().equals("apaga")){
+            mConnectedThread.write("0");
+            MandarMessage("Apagando comunicacion Arduino");
         }else{
-            if(mensaje.getText().equals("0")  || mensaje.getText().equals("1")){
-                Log.i("Modesto", "Mensaje mandado: "+mensaje.getText());
-                mConnectedThread.write(mensaje.getText());
-            }
-            MandarMessage("Hola "+f.getFirstName()+" has escrito: "+mensaje.getText());
+
+            MandarMessage("Ups!! creo que escribiste mal el mensaje ya que no entiendo lo que me pides, intentalo de nuevo :(");
         }
 
         resultado.clear();
     }
 
-    private void VerificarMensajesCanal(String update_id){
+    /////////////////////////////////////////////////////////////////////////////////////////
+    /*private void VerificarMensajesCanal(String update_id){
         for (ResultCanal result : resultCanal) {
             update_id = result.getUpdateId();
             postCanal = result.getChannelPost();
@@ -297,7 +288,8 @@ public class TLGPullService extends IntentService {
         }
 
         resultCanal.clear();
-    }
+    }*/
+    ///////////////////////////////////////////////////////////////////////////////////////////
 
     private String RevisarUpdateId(String rest, String offset){
         try {
@@ -393,7 +385,7 @@ public class TLGPullService extends IntentService {
         return rest;
     }
 
-    public void Datos_API() {
+    public void Datos_API(String tiempo) {
 
         // Create a new object from HttpLoggingInterceptor
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
@@ -404,7 +396,7 @@ public class TLGPullService extends IntentService {
 
         Retrofit retrofit = new Retrofit
                 .Builder()
-                .baseUrl("http://ec2-18-191-133-208.us-east-2.compute.amazonaws.com:10004/")
+                .baseUrl("http://ec2-18-119-66-249.us-east-2.compute.amazonaws.com:10004/")
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
@@ -418,8 +410,21 @@ public class TLGPullService extends IntentService {
                     if(response.isSuccessful()){
                         sensor = response.body();
                         List<Datum> datum = sensor.getData();
-                        Log.d("DATA1", "onResponse: "+datum.get(0).getDato());
-                        new Envio_Mensaje().execute("Hola "+mensaje.getFrom().getFirstName()+"! el dato es: "+datum.get(0).getDato(),mensaje.getChat().getId());
+
+                        if(tiempo.equals("hoy")){
+                            int c =DatosFechaDia(datum);
+                            new Envio_Mensaje().execute("Hola "+mensaje.getFrom().getFirstName()+"! el numero de usuarios que ha entrado hoy es de: "+c,mensaje.getChat().getId());
+                        }
+
+                        if(tiempo.equals("semana")){
+                            int c =DatosFechaSemana(datum);
+                            new Envio_Mensaje().execute("Hola "+mensaje.getFrom().getFirstName()+"! el numero de usuarios que ha entrado esta semana es de: "+c,mensaje.getChat().getId());
+                        }
+
+                        if(tiempo.equals("fecha_ultima")){
+                            String fecha_ultima = UltimaFecha(datum);
+                            new Envio_Mensaje().execute("Hola "+mensaje.getFrom().getFirstName()+"! La ultima vez que alguien entro a tu casa fue "+fecha_ultima,mensaje.getChat().getId());
+                        }
                     }
                 }catch (Exception e){
                     e.printStackTrace();
@@ -428,10 +433,110 @@ public class TLGPullService extends IntentService {
 
             @Override
             public void onFailure(Call<Sensor> call, Throwable t) {
-                new Envio_Mensaje().execute("Hola "+mensaje.getFrom().getFirstName()+"! al parecer hay un error en la conexion intentalo de nuevo mas tarde :(");
+                new Envio_Mensaje().execute("Hola "+mensaje.getFrom().getFirstName()+"! al parecer hay un error en la conexion intentalo de nuevo mas tarde :(",mensaje.getChat().getId());
                 Log.d("ERROR", "onFailure: "+t.getMessage());
             }
         });
+
+    }
+
+    private int DatosFechaDia(List<Datum> datum) {
+        int c=0;
+        DateFormat df1=new SimpleDateFormat("yyyy-MM-dd");
+        String date=df1.format(Calendar.getInstance().getTime());
+
+        Log.d("FECHA", "DatosFechaDia: "+date);
+        for(Datum dato : datum){
+            if(dato.getCreatedAt().substring(0,10).equals(date)){
+                c++;
+            }
+        }
+
+        return c;
+    }
+
+    private int DatosFechaSemana(List<Datum> datum) {
+        int c=0;
+        DateFormat df1=new SimpleDateFormat("yyyy/MM/dd");
+        String date=df1.format(Calendar.getInstance().getTime());
+
+        //Sacamos los datos String
+        String dayString = date.substring(8,10);
+        String monthString = date.substring(5,7);
+        String yearString = date.substring(0,4);
+
+        //Los convertimos a enteros
+        int day = Integer.parseInt(dayString)-7;
+        int month = Integer.parseInt(monthString);
+        int year = Integer.parseInt(yearString);
+
+        //Verificamos los dias del mes si es que se acaba el mes
+        if(day < 0){
+            month-= 1;
+            day = numeroDeDiasMes(month,year,day);
+        }else if(day == 0){
+            month-=1;
+            day = numeroDeDiasMes(month,year,0);
+        }
+
+        for(Datum dato : datum){
+            if(dato.getCreatedAt().substring(0,4).equals(yearString) &&
+               dato.getCreatedAt().substring(5,7).equals(monthString) &&
+               Integer.parseInt(dato.getCreatedAt().substring(8,10)) >= day){
+                c++;
+            }
+        }
+
+        return c;
+    }
+
+    private String UltimaFecha(List<Datum> datum) {
+        String fecha = "el "+datum.get(datum.size()-1).getCreatedAt().substring(0,10)+" a las "+datum.get(datum.size()-1).getCreatedAt().substring(11,20);
+        return fecha;
+    }
+
+    public static int numeroDeDiasMes(int mes, int anio, int negativo) {
+
+        int numeroDias = -1;
+        switch (mes) {
+            case 1:
+            case 3:
+            case 5:
+            case 7:
+            case 8:
+            case 10:
+            case 12:
+                numeroDias = 31 + negativo;
+                break;
+            case 4:
+            case 6:
+            case 9:
+            case 11:
+                numeroDias = 30+ negativo;
+                break;
+            case 2:
+
+                if (esBisiesto(anio)) {
+                    numeroDias = 29+ negativo;
+                } else {
+                    numeroDias = 28+ negativo;
+                }
+                break;
+
+        }
+
+        return numeroDias;
+    }
+
+
+    public static boolean esBisiesto(int anio) {
+
+        GregorianCalendar calendar = new GregorianCalendar();
+        boolean esBisiesto = false;
+        if (calendar.isLeapYear(anio)) {
+            esBisiesto = true;
+        }
+        return esBisiesto;
 
     }
 

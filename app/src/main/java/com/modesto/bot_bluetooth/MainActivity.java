@@ -28,17 +28,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button btnOn, btnOff;
-
-    TextView sensorView0;
-
     private BluetoothAdapter btAdapter = null;
     private BluetoothSocket btSocket = null;
-
-    private ConnectedThread mConnectedThread;
-
-    // SPP UUID service - this should work for most devices
-    private static final UUID BTMODULEUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 
     // String for MAC address
     private static String address = null;

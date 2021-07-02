@@ -13,10 +13,11 @@ public class Envio_Mensaje extends AsyncTask<String, Void, Void> {
 
     @Override
     protected Void doInBackground(String... men) {
+        Log.d("MENSAJE", "doInBackground: "+men[1]);
         Log.d("DATA2", "onResponse: "+men[0]);
         String rest="";
         try {
-            URL ur = new URL(URL+"sendMessage?chat_id=1545757821&text="+men[0]);
+            URL ur = new URL(URL+"sendMessage?chat_id="+men[1]+"&text="+men[0]);
             HttpURLConnection conn = (HttpURLConnection) ur.openConnection();
             conn.setDoOutput(true);
             conn.setRequestMethod("GET");
