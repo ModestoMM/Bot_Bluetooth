@@ -35,7 +35,7 @@
         android:layout_height="wrap_content"
         android:textSize="@dimen/size_text_normally"
         android:enabled="false"
-        android:text="Hola por favor dirígete a Telegram para que puedas usar el Bot el cual cuenta con las siguientes opciones: \n1.Hola\n2.Adios\n3.Gracias\n4. ¿Cuántas personas han entrado a mi casa hoy?\n5. ¿Cuántas personas han entrado a mi casa esta semana?\n6. ¿Cuándo fue la última vez que alguien entró a mi casa?\n Puedes escribir la pregunta completa o solo su número, ¡QUE TE DIVIERTAS!  \\(*-*)/"
+        android:text="Hola por favor dirígete a Telegram para que puedas usar el Bot el cual cuenta con las siguientes opciones: \n1. Hola\n2. encender\n3. apagar\n4. Adios\n5. Gracias\n6. ¿Cuántas personas han entrado a mi casa hoy?\n7. ¿Cuántas personas han entrado a mi casa esta semana?\n8. ¿Cuándo fue la última vez que alguien entró a mi casa?\n Puedes escribir la pregunta completa o solo su número, ¡QUE TE DIVIERTAS!  \\(*-*)/"
         android:textColor="@color/text"
         android:inputType="textMultiLine"/>
 

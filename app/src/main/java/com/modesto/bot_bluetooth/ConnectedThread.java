@@ -38,13 +38,16 @@ public void run() {
     int bytes;
 }
 //write method
-public void write(String input) {
+public boolean write(String input) {
+    boolean envio_exito = true;
     byte[] msgBuffer = input.getBytes();           //converts entered String into bytes
     try {
         mmOutStream.write(msgBuffer);                //write bytes over BT connection via outstream
     } catch (IOException e) {
         Log.d("ERROR", "metodo write fallo: "+e.getMessage());
+        envio_exito = false;
     }
+    return envio_exito;
 }
 
 }

@@ -181,18 +181,18 @@ public class TLGPullService extends IntentService {
 
             From f = mensaje.getFrom();
 
-        if(mensaje.getText().equals("¿Cuantas personas han entrado a mi casa hoy?")|| mensaje.getText().equals("4")){
+        if(mensaje.getText().equals("¿Cuantas personas han entrado a mi casa hoy?")|| mensaje.getText().equals("6")){
             Datos_API("hoy");
-        }else if(mensaje.getText().equals("¿Cuantas personas han entrado a mi casa esta semana?")|| mensaje.getText().equals("5")){
+        }else if(mensaje.getText().equals("¿Cuantas personas han entrado a mi casa esta semana?")|| mensaje.getText().equals("7")){
             Datos_API("semana");
         }else
-        if(mensaje.getText().equals("¿Cuándo fue la última ves que alguien entró a mi casa?")|| mensaje.getText().equals("6")){
+        if(mensaje.getText().equals("¿Cuándo fue la última ves que alguien entró a mi casa?")|| mensaje.getText().equals("8")){
             Datos_API("fecha_ultima");
         }else
-        if(mensaje.getText().equals("Gracias")|| mensaje.getText().equals("3")){
+        if(mensaje.getText().equals("Gracias")|| mensaje.getText().equals("5")){
             MandarMessage("De nada "+f.getFirstName()+" estoy para servirte <3");
         }else
-        if(mensaje.getText().equals("Adios") || mensaje.getText().equals("Adiós")|| mensaje.getText().equals("2")){
+        if(mensaje.getText().equals("Adios") || mensaje.getText().equals("Adiós")|| mensaje.getText().equals("4")){
             MandarMessage("Hasta pronto "+f.getFirstName()+"!");
         }else
         if(mensaje.getText().equals("Hola") || mensaje.getText().equals("1")){
@@ -202,20 +202,28 @@ public class TLGPullService extends IntentService {
             String mens = "Hola "+f.getFirstName()+"!\n "+
                     "Las opciones que tengo son:\n " +
                     "1. Hola,\n " +
-                    "2. Adios,\n " +
-                    "3. Gracias,\n " +
-                    "4. ¿Cuantas personas han entrado a mi casa hoy?,\n " +
-                    "5. ¿Cuantas personas han entrado a mi casa esta semana?,\n " +
-                    "6. ¿Cuándo fue la última ves que alguien entró a mi casa?,\n " +
+                    "2. encender\n "+
+                    "3. apagar\n "+
+                    "4. Adios,\n " +
+                    "5. Gracias,\n " +
+                    "6. ¿Cuantas personas han entrado a mi casa hoy?,\n " +
+                    "7. ¿Cuantas personas han entrado a mi casa esta semana?,\n " +
+                    "8. ¿Cuándo fue la última ves que alguien entró a mi casa?,\n " +
                     "Trata de escribirlas tal cual si no, no podre entender lo que quieres :(";
             MandarMessage(mens);
-        }else if(mensaje.getText().equals("encender")  || mensaje.getText().equals("enciende")){
-            mConnectedThread.write("1");
-            MandarMessage("Encendiendo comunicación Arduino");
+        }else if(mensaje.getText().equals("encender")  || mensaje.getText().equals("enciende")|| mensaje.getText().equals("2")){
+            if(mConnectedThread.write("1")){
+                MandarMessage("Encendiendo comunicación Arduino");
+            }else{
+                MandarMessage("Ups! hubo un error al comunicarse con el modulo BT de arduino, verifique si selecciono el dispositivo correcto :(");
+            }
         }
-        else if(mensaje.getText().equals("apagar")  || mensaje.getText().equals("apaga")){
-            mConnectedThread.write("0");
-            MandarMessage("Apagando comunicacion Arduino");
+        else if(mensaje.getText().equals("apagar")  || mensaje.getText().equals("apaga")|| mensaje.getText().equals("3")){
+            if(mConnectedThread.write("0")){
+                MandarMessage("Apagando comunicacion Arduino");
+            }else{
+                MandarMessage("Ups! hubo un error al comunicarse con el modulo BT de arduino, verifique si selecciono el dispositivo correcto :(");
+            }
         }else{
 
             MandarMessage("Ups!! creo que escribiste mal el mensaje ya que no entiendo lo que me pides, intentalo de nuevo :(");
@@ -327,7 +335,6 @@ public class TLGPullService extends IntentService {
     }
 
     public String MandarMessage(String men) {
-        Log.d("DATA2", "onResponse: "+men);
         String rest="";
         try {
             URL ur = new URL(URL+"sendMessage?chat_id="+mensaje.getChat().getId()+"&text="+men);
@@ -434,7 +441,6 @@ public class TLGPullService extends IntentService {
             @Override
             public void onFailure(Call<Sensor> call, Throwable t) {
                 new Envio_Mensaje().execute("Hola "+mensaje.getFrom().getFirstName()+"! al parecer hay un error en la conexion intentalo de nuevo mas tarde :(",mensaje.getChat().getId());
-                Log.d("ERROR", "onFailure: "+t.getMessage());
             }
         });
 
