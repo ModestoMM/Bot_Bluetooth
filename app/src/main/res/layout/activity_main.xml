@@ -5,6 +5,38 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:gravity="bottom"
+    android:padding="@dimen/padding_linear_layout"
+    android:background="@color/background_principal">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/text"
+        android:gravity="center"
+        android:textStyle="bold"
+        style="?attr/textAppearanceSearchResultTitle"
+        android:textSize="@dimen/size_tittle"
+        android:layout_marginBottom="@dimen/margin_bottom_text_tittle"
+        android:text="Presiona sobre el bot para saludarlo"/>
+
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/gif_telegra"
+        android:layout_width="@dimen/width_gif"
+        android:layout_height="@dimen/height_gif"
+        android:layout_gravity="center"
+        android:src="@drawable/bots"
+        android:layout_marginBottom="@dimen/bot_gif_margin_bottom"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/size_text_normally"
+        android:enabled="false"
+        android:text="Hola por favor dirígete a Telegram para que puedas usar el Bot el cual cuenta con las siguientes opciones: \n1.Hola\n2.Adios\n3.Gracias\n4. ¿Cuántas personas han entrado a mi casa hoy?\n5. ¿Cuántas personas han entrado a mi casa esta semana?\n6. ¿Cuándo fue la última vez que alguien entró a mi casa?\n Puedes escribir la pregunta completa o solo su número, ¡QUE TE DIVIERTAS!  \\(*-*)/"
+        android:textColor="@color/text"
+        android:inputType="textMultiLine"/>
 
 </LinearLayout>

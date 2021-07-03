@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Bot_Bluetooth</string>
+    <string name="chooser_title">Hola mundo</string>
 </resources>

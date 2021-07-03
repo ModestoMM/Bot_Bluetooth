@@ -4,10 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothSocket;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,6 +22,7 @@ import java.util.UUID;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
+import pl.droidsonroids.gif.GifImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -34,13 +37,31 @@ public class MainActivity extends AppCompatActivity {
     // String for MAC address
     private static String address = null;
 
+    GifImageView telegram;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        btAdapter = BluetoothAdapter.getDefaultAdapter();       // get Bluetooth adapter
-        checkBTState();
 
+        telegram = findViewById(R.id.gif_telegra);
+
+        btAdapter = BluetoothAdapter.getDefaultAdapter();
+        checkBTState();
+        telegram.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent waIntent = new Intent(Intent.ACTION_SEND);
+                waIntent.setType("text/plain");
+                waIntent.setPackage("org.telegram.messenger");
+                if (waIntent != null) {
+                    waIntent.putExtra(Intent.EXTRA_TEXT, "Hola");
+                    startActivity(Intent.createChooser(waIntent, "Modesto"));
+                } else {
+                    Toast.makeText(getApplicationContext(), "Telegram is not installed", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     //Checks that the Android device Bluetooth is available and prompts to be turned on if off

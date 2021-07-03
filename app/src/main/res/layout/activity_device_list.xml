@@ -3,16 +3,21 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="@dimen/padding_linear_layout"
+    android:background="@color/background_principal"
     >
     <TextView android:id="@+id/title_paired_devices"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Seleccione un dispositivo btSerial "
+        android:text="Conectese al modulo BT de Arduino"
         android:visibility="gone"
-        android:background="#666"
-        android:textColor="#fff"
-        android:paddingLeft="5dp"
+        android:textSize="@dimen/size_tittle"
+        android:textStyle="bold"
+        android:layout_marginBottom="@dimen/margin_bottom_text_tittle"
+        android:gravity="center"
+        android:textColor="@color/text"
+
         />
     <ListView android:id="@+id/paired_devices"
         android:layout_width="match_parent"
@@ -25,6 +30,7 @@
         android:id="@+id/connecting"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/text"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
@@ -34,6 +40,8 @@
         android:text="Si no hay dispositivos en la lista, por favor enlaza tu dispositivo en la configuración de Android"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:layout_margin="5dp"
+        android:textColor="@color/text"
+        android:gravity="center"
         android:textSize="18dp" />
 
     <LinearLayout

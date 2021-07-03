@@ -181,21 +181,21 @@ public class TLGPullService extends IntentService {
 
             From f = mensaje.getFrom();
 
-        if(mensaje.getText().equals("¿Cuantas personas han entrado a mi casa hoy?")){
+        if(mensaje.getText().equals("¿Cuantas personas han entrado a mi casa hoy?")|| mensaje.getText().equals("4")){
             Datos_API("hoy");
-        }else if(mensaje.getText().equals("¿Cuantas personas han entrado a mi casa esta semana?")){
+        }else if(mensaje.getText().equals("¿Cuantas personas han entrado a mi casa esta semana?")|| mensaje.getText().equals("5")){
             Datos_API("semana");
         }else
-        if(mensaje.getText().equals("¿Cuándo fue la última ves que alguien entró a mi casa?")){
+        if(mensaje.getText().equals("¿Cuándo fue la última ves que alguien entró a mi casa?")|| mensaje.getText().equals("6")){
             Datos_API("fecha_ultima");
         }else
-        if(mensaje.getText().equals("Gracias")){
+        if(mensaje.getText().equals("Gracias")|| mensaje.getText().equals("3")){
             MandarMessage("De nada "+f.getFirstName()+" estoy para servirte <3");
         }else
-        if(mensaje.getText().equals("Adios") || mensaje.getText().equals("Adiós")){
+        if(mensaje.getText().equals("Adios") || mensaje.getText().equals("Adiós")|| mensaje.getText().equals("2")){
             MandarMessage("Hasta pronto "+f.getFirstName()+"!");
         }else
-        if(mensaje.getText().equals("Hola")){
+        if(mensaje.getText().equals("Hola") || mensaje.getText().equals("1")){
             MandarMessage("Hola "+f.getFirstName()+"!");
         } else
         if(mensaje.getText().equals("Opciones")){
@@ -204,9 +204,9 @@ public class TLGPullService extends IntentService {
                     "1. Hola,\n " +
                     "2. Adios,\n " +
                     "3. Gracias,\n " +
-                    "5. ¿Cuantas personas han entrado a mi casa hoy?,\n " +
-                    "6. ¿Cuantas personas han entrado a mi casa esta semana?,\n " +
-                    "7. ¿Cuándo fue la última ves que alguien entró a mi casa?,\n " +
+                    "4. ¿Cuantas personas han entrado a mi casa hoy?,\n " +
+                    "5. ¿Cuantas personas han entrado a mi casa esta semana?,\n " +
+                    "6. ¿Cuándo fue la última ves que alguien entró a mi casa?,\n " +
                     "Trata de escribirlas tal cual si no, no podre entender lo que quieres :(";
             MandarMessage(mens);
         }else if(mensaje.getText().equals("encender")  || mensaje.getText().equals("enciende")){

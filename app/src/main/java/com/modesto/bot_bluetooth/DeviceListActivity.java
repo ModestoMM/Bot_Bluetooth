@@ -24,7 +24,6 @@ public class DeviceListActivity extends AppCompatActivity {
     private static final boolean D = true;
 
     // declare button for launching website and textview for connection status
-    Button tlbutton;
     TextView textView1;
 
     // EXTRA string to send on to mainactivity
@@ -70,7 +69,7 @@ public class DeviceListActivity extends AppCompatActivity {
                 mPairedDevicesArrayAdapter.add(device.getName() + "\n" + device.getAddress());
             }
         } else {
-            String noDevices = "Ningun dispositivo pudo ser emparejado";
+            String noDevices = "No se encuentra ningun dispositivo";
             mPairedDevicesArrayAdapter.add(noDevices);
         }
     }
