@@ -66,7 +66,7 @@ public class TLGPullService extends IntentService {
 
     //TELEGRAM
     public static final String BROADCAST_ACTION = "modesto.apps.constants.BROADCAST";
-    String TOKEN = "1677424373:AAHYrG4NRu8ow57tHZ8jNjwuIx_i-XjoPGg";
+    String TOKEN = "TU_TOKEN_BOT_TELEGRAM";
     String URL = "https://api.telegram.org/bot"+TOKEN+"/";
 
     //Variables para el Chat unico
