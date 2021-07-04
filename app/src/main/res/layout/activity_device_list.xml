@@ -6,6 +6,7 @@
     android:padding="@dimen/padding_linear_layout"
     android:background="@color/background_principal"
     >
+
     <TextView android:id="@+id/title_paired_devices"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

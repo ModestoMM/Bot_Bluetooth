@@ -66,7 +66,7 @@ public class TLGPullService extends IntentService {
 
     //TELEGRAM
     public static final String BROADCAST_ACTION = "modesto.apps.constants.BROADCAST";
-    String TOKEN = "TU_TOKEN_BOT_TELEGRAM";
+    String TOKEN = "1677424373:AAHYrG4NRu8ow57tHZ8jNjwuIx_i-XjoPGg";
     String URL = "https://api.telegram.org/bot"+TOKEN+"/";
 
     //Variables para el Chat unico
@@ -211,14 +211,14 @@ public class TLGPullService extends IntentService {
                     "8. ¿Cuándo fue la última ves que alguien entró a mi casa?,\n " +
                     "Trata de escribirlas tal cual si no, no podre entender lo que quieres :(";
             MandarMessage(mens);
-        }else if(mensaje.getText().equals("encender")  || mensaje.getText().equals("enciende")|| mensaje.getText().equals("2")){
+        }else if(mensaje.getText().equals("Encender")  || mensaje.getText().equals("Enciende")|| mensaje.getText().equals("2")){
             if(mConnectedThread.write("1")){
                 MandarMessage("Encendiendo comunicación Arduino");
             }else{
                 MandarMessage("Ups! hubo un error al comunicarse con el modulo BT de arduino, verifique si selecciono el dispositivo correcto :(");
             }
         }
-        else if(mensaje.getText().equals("apagar")  || mensaje.getText().equals("apaga")|| mensaje.getText().equals("3")){
+        else if(mensaje.getText().equals("Apagar")  || mensaje.getText().equals("Apaga")|| mensaje.getText().equals("3")){
             if(mConnectedThread.write("0")){
                 MandarMessage("Apagando comunicacion Arduino");
             }else{
