@@ -66,7 +66,7 @@ public class TLGPullService extends IntentService {
 
     //TELEGRAM
     public static final String BROADCAST_ACTION = "modesto.apps.constants.BROADCAST";
-    String TOKEN = "TU_TOKEN";
+    String TOKEN = "1677424373:AAHYrG4NRu8ow57tHZ8jNjwuIx_i-XjoPGg";
     String URL = "https://api.telegram.org/bot"+TOKEN+"/";
 
     //Variables para el Chat unico
@@ -403,7 +403,7 @@ public class TLGPullService extends IntentService {
 
         Retrofit retrofit = new Retrofit
                 .Builder()
-                .baseUrl("URL")
+                .baseUrl("http://ec2-18-119-66-249.us-east-2.compute.amazonaws.com:10004/")
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
@@ -420,12 +420,20 @@ public class TLGPullService extends IntentService {
 
                         if(tiempo.equals("hoy")){
                             int c =DatosFechaDia(datum);
-                            new Envio_Mensaje().execute("Hola "+mensaje.getFrom().getFirstName()+"! el numero de usuarios que ha entrado hoy es de: "+c,mensaje.getChat().getId());
+                            if(c>5){
+                                new Envio_Mensaje().execute("Hola "+mensaje.getFrom().getFirstName()+"! al parecer han entrado "+c+" a tu casa el dia de hoy te recomiendo que veas el siguiente video y que tomes las precauciones correspondientes https://www.youtube.com/watch?v=7dT5FaJ_ZnQ",mensaje.getChat().getId());
+                            }else{
+                                new Envio_Mensaje().execute("Hola "+mensaje.getFrom().getFirstName()+"! el numero de usuarios que ha entrado hoy es de: "+c,mensaje.getChat().getId());
+                            }
                         }
 
                         if(tiempo.equals("semana")){
                             int c =DatosFechaSemana(datum);
-                            new Envio_Mensaje().execute("Hola "+mensaje.getFrom().getFirstName()+"! el numero de usuarios que ha entrado esta semana es de: "+c,mensaje.getChat().getId());
+                            if(c>10){
+                                new Envio_Mensaje().execute("Hola "+mensaje.getFrom().getFirstName()+"! Al parecer han entrado "+c+" a tu casa esta semana te recomiendo que veas el siguiente video y que tomes las precauciones correspondientes https://www.youtube.com/watch?v=x1xvTiZpkv0",mensaje.getChat().getId());
+                            }else {
+                                new Envio_Mensaje().execute("Hola " + mensaje.getFrom().getFirstName() + "! el numero de usuarios que ha entrado esta semana es de: " + c, mensaje.getChat().getId());
+                            }
                         }
 
                         if(tiempo.equals("fecha_ultima")){
@@ -476,6 +484,8 @@ public class TLGPullService extends IntentService {
         int month = Integer.parseInt(monthString);
         int year = Integer.parseInt(yearString);
 
+
+
         //Verificamos los dias del mes si es que se acaba el mes
         if(day < 0){
             month-= 1;
@@ -484,10 +494,10 @@ public class TLGPullService extends IntentService {
             month-=1;
             day = numeroDeDiasMes(month,year,0);
         }
-
+        Log.d("DAYY", "DatosFechaSemana: "+day+" "+month);
         for(Datum dato : datum){
             if(dato.getCreatedAt().substring(0,4).equals(yearString) &&
-               dato.getCreatedAt().substring(5,7).equals(monthString) &&
+               Integer.parseInt(dato.getCreatedAt().substring(5,7)) >= month &&
                Integer.parseInt(dato.getCreatedAt().substring(8,10)) >= day){
                 c++;
             }
