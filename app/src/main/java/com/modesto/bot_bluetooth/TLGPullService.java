@@ -15,13 +15,7 @@ import com.google.gson.Gson;
 import com.modesto.bot_bluetooth.http.Api.Datum;
 import com.modesto.bot_bluetooth.http.Api.Sensor;
 import com.modesto.bot_bluetooth.http.Api.SensorApi;
-import com.modesto.bot_bluetooth.http.ReplyKeyboardMarkup.KeyboardButton;
-import com.modesto.bot_bluetooth.http.ReplyKeyboardMarkup.ReplyKeyboardMarkup;
-import com.modesto.bot_bluetooth.http.Stickers.Sticker;
-import com.modesto.bot_bluetooth.http.Stickers.Stickers;
-import com.modesto.bot_bluetooth.http.Stickers.Thumb;
 import com.modesto.bot_bluetooth.http.canal.ChannelPost;
-import com.modesto.bot_bluetooth.http.canal.ChatCanal;
 import com.modesto.bot_bluetooth.http.canal.ResultCanal;
 import com.modesto.bot_bluetooth.http.canal.TelegramCanalRequest;
 import com.modesto.bot_bluetooth.http.Chat.From;
@@ -34,12 +28,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.UUID;
@@ -51,6 +43,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+
 
 public class TLGPullService extends IntentService {
 
@@ -296,7 +289,38 @@ public class TLGPullService extends IntentService {
         }
 
         resultCanal.clear();
-    }*/
+    }
+
+        public String MandarMessageCanal(String men) {
+
+        String rest="";
+        try {
+            URL ur = new URL("https://api.telegram.org/bot1677424373:AAHYrG4NRu8ow57tHZ8jNjwuIx_i-XjoPGg/sendMessage?chat_id=-1001478095574&text="+men);
+            HttpURLConnection conn = (HttpURLConnection) ur.openConnection();
+            conn.setDoOutput(true);
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("Content-length", "0");
+            conn.setUseCaches(false);
+            conn.setAllowUserInteraction(false);
+            conn.setConnectTimeout(1000);
+            conn.setReadTimeout(1000);
+            conn.connect();
+
+            int status = conn.getResponseCode();
+
+            if (status == 200) {
+                rest = "Message Send as BOT";
+            }
+
+            conn.disconnect();
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return rest;
+    }
+    */
     ///////////////////////////////////////////////////////////////////////////////////////////
 
     private String RevisarUpdateId(String rest, String offset){
@@ -362,36 +386,6 @@ public class TLGPullService extends IntentService {
         return rest;
     }
 
-    public String MandarMessageCanal(String men) {
-
-        String rest="";
-        try {
-            URL ur = new URL("https://api.telegram.org/bot1677424373:AAHYrG4NRu8ow57tHZ8jNjwuIx_i-XjoPGg/sendMessage?chat_id=-1001478095574&text="+men);
-            HttpURLConnection conn = (HttpURLConnection) ur.openConnection();
-            conn.setDoOutput(true);
-            conn.setRequestMethod("GET");
-            conn.setRequestProperty("Content-length", "0");
-            conn.setUseCaches(false);
-            conn.setAllowUserInteraction(false);
-            conn.setConnectTimeout(1000);
-            conn.setReadTimeout(1000);
-            conn.connect();
-
-            int status = conn.getResponseCode();
-
-            if (status == 200) {
-                rest = "Message Send as BOT";
-            }
-
-            conn.disconnect();
-
-
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return rest;
-    }
-
     public void Datos_API(String tiempo) {
 
         // Create a new object from HttpLoggingInterceptor
@@ -421,18 +415,18 @@ public class TLGPullService extends IntentService {
                         if(tiempo.equals("hoy")){
                             int c =DatosFechaDia(datum);
                             if(c>5){
-                                new Envio_Mensaje().execute("Hola "+mensaje.getFrom().getFirstName()+"! al parecer han entrado "+c+" a tu casa el dia de hoy te recomiendo que veas el siguiente video y que tomes las precauciones correspondientes https://www.youtube.com/watch?v=7dT5FaJ_ZnQ",mensaje.getChat().getId());
+                                new Envio_Mensaje().execute("Hola "+mensaje.getFrom().getFirstName()+"! al parecer han entrado "+c+" personas a tu casa el dia de hoy, te recomiendo que veas el siguiente video y que tomes las precauciones correspondientes https://www.youtube.com/watch?v=7dT5FaJ_ZnQ",mensaje.getChat().getId());
                             }else{
-                                new Envio_Mensaje().execute("Hola "+mensaje.getFrom().getFirstName()+"! el numero de usuarios que ha entrado hoy es de: "+c,mensaje.getChat().getId());
+                                new Envio_Mensaje().execute("Hola "+mensaje.getFrom().getFirstName()+"! el numero de personas que ha entrado hoy es de: "+c,mensaje.getChat().getId());
                             }
                         }
 
                         if(tiempo.equals("semana")){
                             int c =DatosFechaSemana(datum);
                             if(c>10){
-                                new Envio_Mensaje().execute("Hola "+mensaje.getFrom().getFirstName()+"! Al parecer han entrado "+c+" a tu casa esta semana te recomiendo que veas el siguiente video y que tomes las precauciones correspondientes https://www.youtube.com/watch?v=x1xvTiZpkv0",mensaje.getChat().getId());
+                                new Envio_Mensaje().execute("Hola "+mensaje.getFrom().getFirstName()+"! Al parecer han entrado "+c+" personas a tu casa hace una semana, te recomiendo que veas el siguiente video y que tomes las precauciones correspondientes https://www.youtube.com/watch?v=x1xvTiZpkv0",mensaje.getChat().getId());
                             }else {
-                                new Envio_Mensaje().execute("Hola " + mensaje.getFrom().getFirstName() + "! el numero de usuarios que ha entrado esta semana es de: " + c, mensaje.getChat().getId());
+                                new Envio_Mensaje().execute("Hola " + mensaje.getFrom().getFirstName() + "! el numero de personas que ha entrado hace una semana es de: " + c, mensaje.getChat().getId());
                             }
                         }
 
